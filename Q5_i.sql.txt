@@ -1,5 +1,4 @@
-Q5 i
-a.
+--Q5 i a.
 SELECT b.product
 ,count(a.id) as number_count
 FROM claim a 
@@ -9,8 +8,8 @@ where year(a.submit_date)= 2021
 group by b.product
 order by number_count desc;
 
-b.
-New Policy:
+--b.
+--New Policy:
 select 
 avg(Pre_receive) as avg_pre_new_policy
 from(
@@ -34,9 +33,9 @@ order by b.user_id, b.issue_date ASc
 )d
 where d.rank=1
 
-#the average net premium received from new policie:288.81HKD
+--the average net premium received from new policie:288.81HKD
 
-Returning Policy:
+--Returning Policy:
 select 
 avg(Pre_receive) as avg_pre_new_policy
 from(
@@ -60,4 +59,4 @@ order by b.user_id, b.issue_date ASc
 )d
 where d.rank>1
 
-#the average net premium received from return policie:144.48 HKD
+--the average net premium received from return policie:144.48 HKD
