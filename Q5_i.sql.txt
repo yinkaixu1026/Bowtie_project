@@ -1,0 +1,63 @@
+Q5 i
+a.
+SELECT b.product
+,count(a.id) as number_count
+FROM claim a 
+left join policy b 
+on a.policy_number = b.policy_number
+where year(a.submit_date)= 2021
+group by b.product
+order by number_count desc;
+
+b.
+New Policy:
+select 
+avg(Pre_receive) as avg_pre_new_policy
+from(
+select distinct b.user_id
+,b.issue_date
+,a.policy_number
+,c.Pre_receive
+,row_number()over(partition by a.policy_number order by b.issue_date desc) as RANK
+from invoice a 
+left join policy b 
+on a.policy_number = b.policy_number
+LEFT JOIN 
+(select distinct a.policy_number
+, a.pre_levy_amount as Pre_receive
+,MIN(a.coverage_start_date) 
+from invoice a
+group by a.policy_number)c 
+ON a.policy_number = c.policy_number
+where b.user_id is not null 
+order by b.user_id, b.issue_date ASc
+)d
+where d.rank=1
+
+#the average net premium received from new policie:288.81HKD
+
+Returning Policy:
+select 
+avg(Pre_receive) as avg_pre_new_policy
+from(
+select distinct b.user_id
+,b.issue_date
+,a.policy_number
+,c.Pre_receive
+,row_number()over(partition by a.policy_number order by b.issue_date desc) as RANK
+from invoice a 
+left join policy b 
+on a.policy_number = b.policy_number
+LEFT JOIN 
+(select distinct a.policy_number
+, a.pre_levy_amount as Pre_receive
+,MIN(a.coverage_start_date) 
+from invoice a
+group by a.policy_number)c 
+ON a.policy_number = c.policy_number
+where b.user_id is not null 
+order by b.user_id, b.issue_date ASc
+)d
+where d.rank>1
+
+#the average net premium received from return policie:144.48 HKD
